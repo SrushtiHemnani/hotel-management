@@ -18,7 +18,7 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 
 // auth middleware
 
-if(!in_array($uri, ['login', 'signup']) && !isset($_SESSION['user_id'])) {
+if(!in_array($uri, ['login', 'sign-up']) && !isset($_SESSION['user_id'])) {
 	header('Location: /login');
 	exit;
 }

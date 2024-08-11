@@ -33,7 +33,7 @@ class BookingController extends BaseController
 			$rooms = $booking?->rooms?->room_type;
 			return [
 				'customer_name' => $booking->customer->name,
-				'total_price'   => '&#8377;' .$booking->total_price,
+				'total_price'   => '&#8377;' . $booking->total_price,
 				'check_in'      => $booking->check_in,
 				'check_out'     => $booking->check_out,
 				'guest'         => $booking->customer->guests,
@@ -98,13 +98,11 @@ class BookingController extends BaseController
 				$check_out_date = now();
 			}
 			
-			if (!isset($_POST['nights']) || !is_numeric($_POST['nights'])) {
-				// get from the checkin and checkout date
-				$check_in = DateTime::createFromFormat('m/d/Y', $check_in_date);
-				$check_out = DateTime::createFromFormat('m/d/Y', $check_out_date);
-				$interval = $check_in->diff($check_out);
-				$nights = $interval->days;
-			}
+			// get from the checkin and checkout date
+			$check_in = DateTime::createFromFormat('m/d/Y', $check_in_date);
+			$check_out = DateTime::createFromFormat('m/d/Y', $check_out_date);
+			$interval = $check_in->diff($check_out);
+			$nights = $interval->days;
 			
 			
 			// Calculate booking details
@@ -142,7 +140,7 @@ class BookingController extends BaseController
 			
 			
 			// Redirect to the booking page
-			header('Location: /booking-create');
+			header('Location: /booking');
 		}
 		
 		$this->view('booking/create');
