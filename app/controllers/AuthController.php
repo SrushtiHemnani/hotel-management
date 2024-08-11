@@ -15,13 +15,19 @@ class AuthController extends BaseController
 	{
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			// Handle login
-			$isLoggedIn = $this->loginUser($_POST);
+			try {
+				$isLoggedIn = $this->loginUser($_POST);
+			} catch (\Exception $e) {
+				
+				$this->view('auth/login', [ 'error' => 'Invalid email or password.' ]);
+				exit;
+			}
 			
 			if ($isLoggedIn) {
 				header('Location: /');
 				exit;
 			}
-			$this->view('auth/login', ['error' => 'Invalid email or password.']);
+			$this->view('auth/login', [ 'error' => 'Invalid email or password.' ]);
 		}
 		
 		$this->view('auth/login');
@@ -41,7 +47,7 @@ class AuthController extends BaseController
 				header('Location: /login');
 				exit;
 			}
-			$this->view('auth/sign-up', ['error' => 'something went wrong.']);
+			$this->view('auth/sign-up', [ 'error' => 'something went wrong.' ]);
 		}
 		
 		$this->view('auth/sign-up');
@@ -49,9 +55,9 @@ class AuthController extends BaseController
 	
 	public function logOut(): void
 	{
-        // Destroy session
-        session_unset();
-        session_destroy();
+		// Destroy session
+		session_unset();
+		session_destroy();
 		header('Location: /login');
 	}
 	
