@@ -1,6 +1,3 @@
-<?php
-require "./bootstrap/bootstrap.php";
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,3 +12,4 @@ require "./bootstrap/bootstrap.php";
   <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon">
   <title><?php echo 'hotel management'; ?></title>
 <?php include('style.php'); ?>
+

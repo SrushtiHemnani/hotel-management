@@ -1,12 +1,12 @@
 <?php
 
-namespace App\controller;
+namespace App\controllers;
 
 class UserController extends BaseController
 {
 	public function index()
 	{
-	
+		$this->view('index');
 	}
 	
 	
