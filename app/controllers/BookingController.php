@@ -10,13 +10,22 @@ use App\models\Customer;
 use App\services\BookingService;
 use function Symfony\Component\Clock\now;
 
+/**
+ *
+ */
 class BookingController extends BaseController
 {
+	/**
+	 * @return void
+	 */
 	public function index()
 	{
 		$this->view('booking/index');
 	}
 	
+	/**
+	 * @return void
+	 */
 	public function getBooking()
 	{
 		header('Content-Type: application/json');
@@ -52,6 +61,10 @@ class BookingController extends BaseController
 	}
 	
 	
+	/**
+	 * @return void
+	 * @throws \DateMalformedStringException
+	 */
 	public function create()
 	{
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -146,6 +159,9 @@ class BookingController extends BaseController
 		$this->view('booking/create');
 	}
 	
+	/**
+	 * @return int
+	 */
 	private function generateRoomNumber()
 	{
 		// Generate room number logic, could be more complex if needed
@@ -153,6 +169,9 @@ class BookingController extends BaseController
 	}
 	
 	
+	/**
+	 * @return void
+	 */
 	public function calculateCostEstimateAndAllocation()
 	{
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -183,6 +202,9 @@ class BookingController extends BaseController
 		}
 	}
 	
+	/**
+	 * @return array
+	 */
 	public function validateBookingData()
 	{
 		$errors = [];
