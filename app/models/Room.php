@@ -1,10 +1,9 @@
 <?php
 
-namespace
-App\model use use\Model;
-
-Illuminate\Database\Eloquent\Model;
+namespace App\models;
+use Illuminate\Database\Eloquent\Model;
 
 class Room extends Model {
     protected $table = 'rooms';
+	protected $guarded = [];
 }

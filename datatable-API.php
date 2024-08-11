@@ -1570,6 +1570,7 @@
     </div>
 </div>
 
+
 <?php include('partial/scripts.php'); ?>
 <script src="assets/js/datatable/datatables/jquery.dataTables.min.js"></script>
     <script src="assets/js/datatable/datatables/datatable.custom.js"></script>

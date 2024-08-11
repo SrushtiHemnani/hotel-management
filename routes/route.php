@@ -2,6 +2,7 @@
 
 use App\controllers\UserController;
 use App\controllers\AuthController;
+use App\controllers\RoomController;
 use App\controllers\BookingController;
 
 return [
@@ -14,6 +15,18 @@ return [
 	 * booking
 	 */
 	
-	'booking' => [ BookingController::class, 'listBookings' ],
+	'booking' => [ BookingController::class, 'index' ],
 	'booking-create' => [ BookingController::class, 'create' ],
+	
+	'booking-calculate-cost-estimate-and-allocation' => [ BookingController::class, 'calculateCostEstimateAndAllocation' ],
+	'get-booking' => [ BookingController::class, 'getBooking' ],
+	
+	/**
+	 * rooms
+	 */
+	'rooms' => [ RoomController::class, 'index' ],
+	'room-create' => [ RoomController::class, 'create' ],
+	'get-rooms' => [RoomController::class, 'getRoom' ],
+	'room-edit/:id' => [RoomController::class, 'edit'],
+	'room-delete/:id' => [RoomController::class, 'delete'],
 ];

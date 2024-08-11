@@ -2,6 +2,7 @@
 include( 'partial/header.php' ); ?>
 
 <link rel="stylesheet" type="text/css" href="assets/css/vendors/daterange-picker.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/vendors/sweetalert2.css">
 
 <?php
 include( 'partial/loader.php' ); ?>
@@ -33,18 +34,14 @@ include( 'partial/loader.php' ); ?>
                                         <h5>New Booking</h5>
                                     </div>
                                     <div class="card-body">
-                                        <form id="bookingForm" class="theme-form mega-form" method="post">
+                                        <form id="bookingForm" class="theme-form mega-form" method="post" action="booking-create">
                                             <h6>Personal Details</h6>
                                             <div class="mb-3">
-                                                <label class="col-form-label">First Name</label>
-                                                <input class="form-control" type="text" id="firstName" name="first_name"
+                                                <label class="col-form-label">Full Name</label>
+                                                <input class="form-control" type="text" id="fullName" name="name"
                                                        required>
                                             </div>
-                                            <div class="mb-3">
-                                                <label class="col-form-label">Last Name</label>
-                                                <input class="form-control" type="text" id="lastName" name="last_name"
-                                                       required>
-                                            </div>
+                                            
                                             <div class="mb-3">
                                                 <label class="col-form-label">Email</label>
                                                 <input class="form-control" type="email" id="email" name="email"
@@ -53,7 +50,7 @@ include( 'partial/loader.php' ); ?>
                                             <div class="mb-3">
                                                 <label class="col-form-label">Phone Number</label>
                                                 <input class="form-control" type="text" id="phoneNumber"
-                                                       name="phone_number">
+                                                       name="phone">
                                             </div>
                                             <div class="mb-3">
                                                 <label class="col-form-label">Customer Age</label>
@@ -88,15 +85,11 @@ include( 'partial/loader.php' ); ?>
                                                 <div class="guest card mb-3 p-3">
                                                     <h4>Guest 1</h4>
                                                     <div class="form-group">
-                                                        <label class="form-label">Guest First Name</label>
+                                                        <label class="form-label">Guest Full Name</label>
                                                         <input class="form-control" type="text"
-                                                               name="guest_first_name[]" required>
+                                                               name="guest_name[]" required>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label class="form-label">Guest Last Name</label>
-                                                        <input class="form-control" type="text" name="guest_last_name[]"
-                                                               required>
-                                                    </div>
+                                                  
                                                     <div class="form-group">
                                                         <label class="form-label">Guest Age</label>
                                                         <input class="form-control" type="number" name="guest_age[]"
@@ -112,7 +105,7 @@ include( 'partial/loader.php' ); ?>
                                             </button>
 
                                             <div class="text-end">
-                                                <button type="button" class="btn btn-primary" onclick="calculateCost()">
+                                                <button type="button" class="btn btn-primary" id="calculateCost">
                                                     Calculate Cost
                                                 </button>
                                                 <button type="submit" class="btn btn-success">Submit</button>
@@ -140,9 +133,10 @@ include( 'partial/scripts.php' ); ?>
 <?php
 include( 'partial/footer-end.php' ); ?>
 
-
 <script src="assets/js/datepicker/daterange-picker/moment.min.js"></script>
 <script src="assets/js/datepicker/daterange-picker/daterangepicker.js"></script>
+<script src="assets/js/sweet-alert/sweetalert.min.js"></script>
+<script src="assets/js/sweet-alert/app.js"></script>
 <script>
     let guestCounter = 1;
 
@@ -152,14 +146,12 @@ include( 'partial/footer-end.php' ); ?>
         guestDiv.classList.add('guest', 'card', 'mb-3', 'p-3');
         guestDiv.innerHTML = `
             <h4>Guest ${ guestCounter }</h4>
-            <div class="form-group">
-                <label class="form-label">Guest First Name</label>
-                <input class="form-control" type="text" name="guest_first_name[]" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Guest Last Name</label>
-                <input class="form-control" type="text" name="guest_last_name[]" required>
-            </div>
+              <div class="form-group">
+                                                        <label class="form-label">Guest Full Name</label>
+                                                        <input class="form-control" type="text"
+                                                               name="guest_name[]" required>
+                                                    </div>
+                                                  
             <div class="form-group">
                 <label class="form-label">Guest Age</label>
                 <input class="form-control" type="number" name="guest_age[]" required>
@@ -184,6 +176,7 @@ include( 'partial/footer-end.php' ); ?>
 
             if (daysDifference > 0) {
                 $("#nights").val(daysDifference);
+                return daysDifference;
             } else {
                 $("#nights").val(0);
                 alert('Check-out date must be after the check-in date.');
@@ -191,85 +184,7 @@ include( 'partial/footer-end.php' ); ?>
         } else {
             $("#nights").val(0); // Reset if dates are not fully selected
         }
-    }
-    
-    function calculateCost() {
-        calculateNights(); // Ensure nights are calculated first
 
-        const customerAge = parseInt(document.getElementById('customerAge').value);
-        const guestAges = Array.from(document.getElementsByName('guest_age[]')).map(input => parseInt(input.value));
-        const nights = parseInt(document.getElementById('nights').value) || 0;
-
-        const allAges = [customerAge, ...guestAges];
-        const filteredAges = allAges.filter(age => age >= 5);
-
-        const adults = filteredAges.filter(age => age >= 13);
-        const childrenUnder13 = filteredAges.filter(age => age >= 5 && age < 13);
-
-        // Debugging: Check for null values
-        console.log({ allAges, adults, childrenUnder13, filteredAges });
-
-        let singleRooms = 0, doubleRooms = 0, tripleRooms = 0;
-        let rooms = [];
-
-        // Allocate rooms for adults
-        while (adults.length >= 3) {
-            tripleRooms++;
-            rooms.push({ type: 'triple', extraBed: false });
-            adults.splice(0, 3);
-        }
-
-        while (adults.length >= 2) {
-            doubleRooms++;
-            rooms.push({ type: 'double', extraBed: false });
-            adults.splice(0, 2);
-        }
-
-        while (adults.length >= 1) {
-            singleRooms++;
-            rooms.push({ type: 'single', extraBed: false });
-            adults.splice(0, 1);
-        }
-
-        // Function to allocate extra beds for kids under 13
-        function allocateExtraBeds(kids, rooms) {
-            for (let i = 0; i < kids.length; i++) {
-                let bedAllocated = false;
-                for (let j = 0; j < rooms.length; j++) {
-                    if (!rooms[j].extraBed) {
-                        rooms[j].extraBed = true;
-                        bedAllocated = true;
-                        break;
-                    }
-                }
-                if (!bedAllocated) {
-                    singleRooms++;
-                    rooms.push({ type: 'single', extraBed: true });
-                }
-            }
-        }
-
-        // Allocate extra beds for kids under 13
-        allocateExtraBeds(childrenUnder13, rooms);
-
-        // Debugging: Check room allocation
-        console.log({ singleRooms, doubleRooms, tripleRooms, rooms });
-
-        // Calculate total cost
-        const roomRate = ( singleRooms * 1500 ) + ( doubleRooms * 2000 ) + ( tripleRooms * 2750 );
-        const extraBedCost = rooms.filter(room => room.extraBed).length * 500;
-        const totalCost = ( roomRate + extraBedCost ) * nights;
-
-        // Debugging: Check total cost calculation
-        console.log({ roomRate, extraBedCost, totalCost });
-
-        document.getElementById('totalCost').value = totalCost.toFixed(2);
-
-        // Populate hidden fields with room details
-        document.getElementById('singleRooms').value = singleRooms;
-        document.getElementById('doubleRooms').value = doubleRooms;
-        document.getElementById('tripleRooms').value = tripleRooms;
-        document.getElementById('extraBeds').value = rooms.filter(room => room.extraBed).length;
     }
 
     $(function () {
@@ -291,4 +206,52 @@ include( 'partial/footer-end.php' ); ?>
             $(this).val('');
         });
     });
+    
+    $(document).ready(function() {
+    $('#calculateCost').click(function(event) {
+        event.preventDefault();
+
+        calculateNights();
+        // Gather form data
+        let formData = $('#bookingForm').serialize();
+
+        // Send a POST request to the endpoint
+        $.ajax({
+            url: 'booking-calculate-cost-estimate-and-allocation',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function(data) {
+                // Populate form fields with returned data
+                $('#totalCost').val(data.cost);
+                $('#singleRooms').val(data.rooms.SINGLE_ROOM);
+                $('#doubleRooms').val(data.rooms.DOUBLE_ROOM);
+                $('#tripleRooms').val(data.rooms.TRIPLE_ROOM);
+                $('#extraBeds').val(data.rooms.EXTRA_BED);
+
+                if (!data.cost) {
+                    // Display a sweet alert with an error message
+                    swal({
+                        title: 'Cost Calculation',
+                        text: 'Please select a valid date range.',
+                        icon: 'error'
+                    });
+                    return;
+                }
+                
+                // Display a sweet alert with the returned data
+                swal({
+                    title: 'Cost Calculation',
+                    text: `Total Cost: ${data.cost}\nSingle Rooms: ${data.rooms.SINGLE_ROOM}\nDouble Rooms: ${data.rooms.DOUBLE_ROOM}\nTriple Rooms: ${data.rooms.TRIPLE_ROOM}\nExtra Beds: ${data.rooms.EXTRA_BED}`,
+                    icon: 'info'
+                });
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('Error:', textStatus, errorThrown);
+            }
+        });
+    });
+    
+    // check iff
+});
 </script>

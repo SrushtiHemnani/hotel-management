@@ -1,8 +1,7 @@
 {
     "require": {
         "illuminate/database": "^11.20",
-        "vlucas/phpdotenv": "^5.4",
-        "fzaninotto/faker": "^1.9"
+        "illuminate/support" : "^11.20"
     },
     "autoload": {
         "psr-4": {

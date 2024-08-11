@@ -8,8 +8,8 @@
   <meta name="description" content="Cuba admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
   <meta name="keywords" content="admin template, Cuba admin template, dashboard template, flat admin template, responsive admin template, web app">
   <meta name="author" content="pixelstrap">
-  <link rel="icon" href="assets/images/favicon.png" type="image/x-icon">
-  <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon">
+  <link rel="icon" href="<?=BASE_PATH?>assets/images/favicon.png" type="image/x-icon">
+  <link rel="shortcut icon" href="<?=BASE_PATH?>assets/images/favicon.png" type="image/x-icon">
   <title><?php echo 'hotel management'; ?></title>
 <?php include('style.php'); ?>
 

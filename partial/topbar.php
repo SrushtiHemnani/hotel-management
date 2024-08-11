@@ -12,15 +12,15 @@
             </div>
         </form>
         <div class="header-logo-wrapper col-auto p-0">
-            <div class="logo-wrapper"><a href="index.html"><img class="img-fluid" src="assets/images/logo/logo.png" alt=""></a></div>
+            <div class="logo-wrapper"><a href="index.html"><img class="img-fluid" src="<?=BASE_PATH?>assets/images/logo/logo.png" alt=""></a></div>
             <div class="toggle-sidebar"><i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i></div>
         </div>
         <div class="left-header col-xxl-5 col-xl-6 col-lg-5 col-md-4 col-sm-3 p-0">
             <div class="notification-slider">
-                <div class="d-flex h-100"> <img src="assets/images/giftools.gif" alt="gif">
+                <div class="d-flex h-100"> <img src="<?=BASE_PATH?>assets/images/giftools.gif" alt="gif">
                     <h6 class="mb-0 f-w-400"><span class="font-primary">Don't Miss Out! </span><span class="f-light">Out new update has been release.</span></h6><i class="icon-arrow-top-right f-light"></i>
                 </div>
-                <div class="d-flex h-100"><img src="assets/images/giftools.gif" alt="gif">
+                <div class="d-flex h-100"><img src="<?=BASE_PATH?>assets/images/giftools.gif" alt="gif">
                     <h6 class="mb-0 f-w-400"><span class="f-light">Something you love is now on sale! </span></h6><a class="ms-1" href="https://1.envato.market/3GVzd" target="_blank">Buy now !</a>
                 </div>
             </div>
@@ -45,11 +45,11 @@
                 </li>
                 <li> <span class="header-search">
                         <svg>
-                            <use href="assets/svg/icon-sprite.svg#search"></use>
+                            <use href="<?=BASE_PATH?>assets/svg/icon-sprite.svg#search"></use>
                         </svg></span></li>
                 <li class="onhover-dropdown">
                     <svg>
-                        <use href="assets/svg/icon-sprite.svg#star"></use>
+                        <use href="<?=BASE_PATH?>assets/svg/icon-sprite.svg#star"></use>
                     </svg>
                     <div class="onhover-show-div bookmark-flip">
                         <div class="flip-card">
@@ -96,21 +96,21 @@
                 <li>
                     <div class="mode">
                         <svg>
-                            <use href="assets/svg/icon-sprite.svg#moon"></use>
+                            <use href="<?=BASE_PATH?>assets/svg/icon-sprite.svg#moon"></use>
                         </svg>
                     </div>
                 </li>
                 <li class="cart-nav onhover-dropdown">
                     <div class="cart-box">
                         <svg>
-                            <use href="assets/svg/icon-sprite.svg#stroke-ecommerce"></use>
+                            <use href="<?=BASE_PATH?>assets/svg/icon-sprite.svg#stroke-ecommerce"></use>
                         </svg><span class="badge rounded-pill badge-success">2</span>
                     </div>
                     <div class="cart-dropdown onhover-show-div">
                         <h6 class="f-18 mb-0 dropdown-title">Cart</h6>
                         <ul>
                             <li>
-                                <div class="media"><img class="img-fluid b-r-5 me-3 img-60" src="assets/images/other-images/cart-img.jpg" alt="">
+                                <div class="media"><img class="img-fluid b-r-5 me-3 img-60" src="<?=BASE_PATH?>assets/images/other-images/cart-img.jpg" alt="">
                                     <div class="media-body"><span>Furniture Chair for Home</span>
                                         <div class="qty-box">
                                             <div class="input-group"><span class="input-group-prepend">
@@ -125,7 +125,7 @@
                                 </div>
                             </li>
                             <li>
-                                <div class="media"><img class="img-fluid b-r-5 me-3 img-60" src="assets/images/other-images/cart-img.jpg" alt="">
+                                <div class="media"><img class="img-fluid b-r-5 me-3 img-60" src="<?=BASE_PATH?>assets/images/other-images/cart-img.jpg" alt="">
                                     <div class="media-body"><span>Furniture Chair for Home</span>
                                         <div class="qty-box">
                                             <div class="input-group"><span class="input-group-prepend">
@@ -149,7 +149,7 @@
                 <li class="onhover-dropdown">
                     <div class="notification-box">
                         <svg>
-                            <use href="assets/svg/icon-sprite.svg#notification"></use>
+                            <use href="<?=BASE_PATH?>assets/svg/icon-sprite.svg#notification"></use>
                         </svg><span class="badge rounded-pill badge-secondary">4 </span>
                     </div>
                     <div class="onhover-show-div notification-dropdown">
@@ -172,7 +172,7 @@
                     </div>
                 </li>
                 <li class="profile-nav onhover-dropdown pe-0 py-0">
-                    <div class="media profile-media"><img class="b-r-10" src="assets/images/dashboard/profile.png" alt="">
+                    <div class="media profile-media"><img class="b-r-10" src="<?=BASE_PATH?>assets/images/dashboard/profile.png" alt="">
                         <div class="media-body"><span><?php echo $_SESSION['name'];?></span>
                             <p class="mb-0 font-roboto">Admin <i class="middle fa fa-angle-down"></i></p>
                         </div>
