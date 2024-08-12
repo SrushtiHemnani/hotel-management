@@ -119,7 +119,7 @@ $(document).ready(function () {
             }
             case 'normal-sidebar': {
                 $(".page-wrapper").attr("class", "page-wrapper horizontal-wrapper " + boxed);
-                $(".logo-wrapper").find('img').attr('src', 'assets/images/logo/logo.png');
+                $(".logo-wrapper").find('img').attr('src', 'assets/images/logo/login.png');
                 localStorage.setItem('page-wrapper', 'horizontal-wrapper');
                 break;
             }

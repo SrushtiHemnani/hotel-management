@@ -24,7 +24,7 @@
                         </div>
                     </li>
                     <li class="sidebar-list">
-                        <a class="sidebar-link sidebar-title" href="dashboard.php">
+                        <a class="sidebar-link sidebar-title" href="/">
                             <svg class="stroke-icon">
                                 <use href="<?=BASE_PATH?>assets/svg/icon-sprite.svg#stroke-home"></use>
                             </svg>
@@ -40,6 +40,7 @@
                         </a>
                         <ul class="sidebar-submenu">
                             <li><a href="booking-create">New Booking</a></li>
+                            <li><a href="booking2">View Booking2</a></li>
                             <li><a href="booking">View Bookings</a></li>
                         </ul>
                     </li>
@@ -56,11 +57,16 @@
                         </ul>
                     </li>
                     <li class="sidebar-list">
-                        <a class="sidebar-link sidebar-title" href="customers.php">
+                        <a class="sidebar-link sidebar-title" href="#">
                             <svg class="stroke-icon">
                                 <use href="<?=BASE_PATH?>assets/svg/icon-sprite.svg#stroke-customers"></use>
                             </svg>
                             <span class="lan8">Customers</span>
+                            <ul class="sidebar-submenu">
+
+                                <li><a href="customers">List Customer</a></li>
+                                <li><a href="customer-create">Add New</a></li>
+                            </ul>
                         </a>
                     </li>
                     <li class="sidebar-list">

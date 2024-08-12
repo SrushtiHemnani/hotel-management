@@ -1,5 +1,6 @@
 <?php
 
+use App\controllers\CustomerController;
 use App\controllers\UserController;
 use App\controllers\AuthController;
 use App\controllers\RoomController;
@@ -16,6 +17,7 @@ return [
 	 */
 	
 	'booking' => [ BookingController::class, 'index' ],
+    'booking2' => [ BookingController::class, 'index_old' ],
 	'booking-create' => [ BookingController::class, 'create' ],
 	
 	'booking-calculate-cost-estimate-and-allocation' => [ BookingController::class, 'calculateCostEstimateAndAllocation' ],
@@ -29,4 +31,7 @@ return [
 	'get-rooms' => [RoomController::class, 'getRoom' ],
 	'room-edit/:id' => [RoomController::class, 'edit'],
 	'room-delete/:id' => [RoomController::class, 'delete'],
+
+    "customers" => [CustomerController::class, 'index'],
+    "get-customers" => [CustomerController::class, 'getCustomers'],
 ];

@@ -505,7 +505,7 @@ require(
                     myTool2: {
                         show: true,
                         title: 'Custom extension method 2',
-                        // icon: 'image://./assets/echarts-logo.png',
+                        // icon: 'image://./assets/echarts-login.png',
                         onclick: function (){
                             alert('myToolHandler2')
                         }

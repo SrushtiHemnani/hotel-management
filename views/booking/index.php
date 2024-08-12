@@ -1,7 +1,7 @@
 <?php
 include( 'partial/header.php' ); ?>
-
-
+<link rel="stylesheet" type="text/css" href="assets/css/vendors/datatables.css">
+<link rel="stylesheet" type="text/css" href="assets/css/vendors/datatable-extension.css">
 <?php
 include( 'partial/loader.php' ); ?>
 
@@ -28,28 +28,78 @@ include( 'partial/loader.php' ); ?>
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-header pb-0 card-no-border">
-                                <h3 class="mb-3">Bookings</h3></div>
+                                <h3>Booking</h3>
+                            </div>
                             <div class="card-body">
-                                <div class="table-responsive">
-
-                                    <table id="bookingTable" class="display">
+                                <div class="dt-ext table-responsive">
+                                    <table class="display" id="export-button">
                                         <thead>
                                         <tr>
+                                            <th>ID</th>
                                             <th>Customer Name</th>
+                                            <th>Room Price</th>
                                             <th>Total Price</th>
                                             <th>Check-In</th>
                                             <th>Check-Out</th>
                                             <th>Rooms</th>
                                             <th>Guests</th>
-
+                                            <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <!-- Data will be loaded here by DataTables -->
+                                        <?php foreach ($booking as $b) { ?>
+                                            <tr>
+                                                <td><?php echo $b['id']; ?></td>
+                                                <td><?php echo $b['customer']['name']; ?></td>
+                                                <td><?php echo $b['room_price']; ?></td>
+                                                <td><?php echo $b['total_price']; ?></td>
+                                                <td><?php echo $b['check_in']; ?></td>
+                                                <td><?php echo $b['check_out']; ?></td>
+                                                <td><?php echo $b['rooms']['room_type']; ?></td>
+
+                                                <td>
+                                                    <!-- Guest List Dropdown -->
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton<?php echo htmlspecialchars($b['id']); ?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            View Guests
+                                                        </button>
+                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton<?php echo htmlspecialchars($b['id']); ?>">
+                                                            <?php if (isset($b['customer']['guests']) && is_array($b['customer']['guests'])): ?>
+                                                                <?php foreach ($b['customer']['guests'] as $guest): ?>
+                                                                    <a class="dropdown-item" href="#">
+                                                                        <?php echo htmlspecialchars($guest['name']); ?> - <?php echo htmlspecialchars($guest['age']); ?>
+                                                                    </a>
+                                                                <?php endforeach; ?>
+                                                            <?php else: ?>
+                                                                <span class="dropdown-item">No guests available</span>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                                <td>
+                                                    <ul class="action">
+                                                        <li class="edit"> <a href="#"><i class="icon-pencil-alt"></i></a></li>
+                                                        <li class="delete"><a href="#"><i class="icon-trash"></i></a></li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        <?php } ?>
                                         </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Customer Name</th>
+                                            <th>Room Price</th>
+                                            <th>Total Price</th>
+                                            <th>Check-In</th>
+                                            <th>Check-Out</th>
+                                            <th>Rooms</th>
+                                            <th>Guests</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        </tfoot>
                                     </table>
-
-
                                 </div>
                             </div>
                         </div>
@@ -59,7 +109,7 @@ include( 'partial/loader.php' ); ?>
             </div>
             <!-- Container-fluid Ends-->
         </div>
-		
+
 		<?php
 		include( 'partial/footer.php' ); ?>
     </div>
@@ -68,45 +118,28 @@ include( 'partial/loader.php' ); ?>
 
 <?php
 include( 'partial/scripts.php' ); ?>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/rowgroup/1.1.4/css/rowGroup.dataTables.min.css"/>
 
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/rowgroup/1.1.4/js/dataTables.rowGroup.min.js"></script>
-
+<script src="assets/js/datatable/datatables/jquery.dataTables.min.js"></script>
+<script src="assets/js/datatable/datatable-extension/dataTables.buttons.min.js"></script>
+<script src="assets/js/datatable/datatable-extension/jszip.min.js"></script>
+<script src="assets/js/datatable/datatable-extension/buttons.colVis.min.js"></script>
+<script src="assets/js/datatable/datatable-extension/pdfmake.min.js"></script>
+<script src="assets/js/datatable/datatable-extension/vfs_fonts.js"></script>
+<script src="assets/js/datatable/datatable-extension/dataTables.autoFill.min.js"></script>
+<script src="assets/js/datatable/datatable-extension/dataTables.select.min.js"></script>
+<script src="assets/js/datatable/datatable-extension/buttons.bootstrap4.min.js"></script>
+<script src="assets/js/datatable/datatable-extension/buttons.html5.min.js"></script>
+<script src="assets/js/datatable/datatable-extension/buttons.print.min.js"></script>
+<script src="assets/js/datatable/datatable-extension/dataTables.bootstrap4.min.js"></script>
+<script src="assets/js/datatable/datatable-extension/dataTables.responsive.min.js"></script>
+<script src="assets/js/datatable/datatable-extension/responsive.bootstrap4.min.js"></script>
+<script src="assets/js/datatable/datatable-extension/dataTables.keyTable.min.js"></script>
+<script src="assets/js/datatable/datatable-extension/dataTables.colReorder.min.js"></script>
+<script src="assets/js/datatable/datatable-extension/dataTables.fixedHeader.min.js"></script>
+<script src="assets/js/datatable/datatable-extension/dataTables.rowReorder.min.js"></script>
+<script src="assets/js/datatable/datatable-extension/dataTables.scroller.min.js"></script>
+<script src="assets/js/datatable/datatable-extension/custom.js"></script>
+<script src="assets/js/tooltip-init.js"></script>><
 <?php
 include( 'partial/footer-end.php' ); ?>
-
-
-<script>
-    $(document).ready(function() {
-        $('#bookingTable').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: 'get-booking', // Path to your server-side script
-                type: 'GET'
-            },
-            columns: [
-                { data: 'customer_name' },
-                { data: 'total_price' },
-                { data: 'check_in' },
-                { data: 'check_out' },
-                { data: 'guest', orderable: false, searchable: false, render: function(data) {
-                    return data.map(function(guest) {
-                        return guest.name + ' (' + guest.age + ' years)';
-                    }).join('<br>');
-                }},
-                { data: 'rooms', orderable: false, searchable: false }
-            ],
-            order: [[0, 'asc'], [2, 'asc']], // Sort by customer_name and check_in
-            rowGroup: {
-                dataSrc: ['customer_name', 'check_in']
-            }
-        });
-    });
-</script>
-
 

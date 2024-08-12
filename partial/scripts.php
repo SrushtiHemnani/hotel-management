@@ -20,7 +20,6 @@
 <!-- Plugins JS Ends-->
 <!-- Theme js-->
 <script src="<?=BASE_PATH?>assets/js/script.js"></script>
-<script src="<?=BASE_PATH?>assets/js/theme-customizer/customizer.js"></script>
 
 
 

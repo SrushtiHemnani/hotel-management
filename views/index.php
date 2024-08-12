@@ -21,9 +21,19 @@
                 <div class="media">
                   <div class="media-body">
                     <div class="greeting-user">
-                      <h4 class="f-w-600">Welcome to cuba</h4>
-                      <p>Here whats happing in your account today</p>
-                      <div class="whatsnew-btn"><a class="btn btn-outline-white">Whats New !</a></div>
+                      <h4 class="f-w-600">Welcome <?=$_SESSION['name']?> </h4>
+                      <div class="whatsnew-btn"><a class="btn btn-outline-white"><?php
+                              // show dynamic greeting message
+                                $hour = date('H');
+                                if ($hour < 12) {
+                                    echo 'Good Morning';
+                                } elseif ($hour < 17) {
+                                    echo 'Good Afternoon';
+                                } else {
+                                    echo 'Good Evening';
+                                }
+
+                              ?></a></div>
                     </div>
                   </div>
                   <div>
@@ -55,54 +65,54 @@
               </div>
             </div>
           </div>
-          <div class="col-xxl-auto col-xl-3 col-sm-6 box-col-6">
-            <div class="row">
-              <div class="col-xl-12">
-                <div class="card widget-1">
-                  <div class="card-body">
-                    <div class="widget-content">
-                      <div class="widget-round secondary">
-                        <div class="bg-round">
-                          <svg class="svg-fill">
-                            <use href="assets/svg/icon-sprite.svg#cart"> </use>
-                          </svg>
-                          <svg class="half-circle svg-fill">
-                            <use href="assets/svg/icon-sprite.svg#halfcircle"></use>
-                          </svg>
+            <div class="col-xxl-auto col-xl-3 col-sm-6 box-col-6">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card widget-1">
+                            <div class="card-body">
+                                <div class="widget-content">
+                                    <div class="widget-round secondary">
+                                        <div class="bg-round">
+                                            <svg class="svg-fill">
+                                                <use href="assets/svg/icon-sprite.svg#cart"> </use>
+                                            </svg>
+                                            <svg class="half-circle svg-fill">
+                                                <use href="assets/svg/icon-sprite.svg#halfcircle"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4>10,000</h4><span class="f-light">Mall</span>
+                                    </div>
+                                </div>
+                                <div class="font-secondary f-w-500"><i class="icon-arrow-up icon-rotate me-1"></i><span>+50%</span></div>
+                            </div>
                         </div>
-                      </div>
-                      <div>
-                        <h4>10,000</h4><span class="f-light">Purchase</span>
-                      </div>
+                        <div class="col-xl-12">
+                            <div class="card widget-1">
+                                <div class="card-body">
+                                    <div class="widget-content">
+                                        <div class="widget-round primary">
+                                            <div class="bg-round">
+                                                <svg class="svg-fill">
+                                                    <use href="assets/svg/icon-sprite.svg#tag"> </use>
+                                                </svg>
+                                                <svg class="half-circle svg-fill">
+                                                    <use href="assets/svg/icon-sprite.svg#halfcircle"></use>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4>4,200</h4><span class="f-light">Sales</span>
+                                        </div>
+                                    </div>
+                                    <div class="font-primary f-w-500"><i class="icon-arrow-up icon-rotate me-1"></i><span>+70%</span></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="font-secondary f-w-500"><i class="icon-arrow-up icon-rotate me-1"></i><span>+50%</span></div>
-                  </div>
                 </div>
-                <div class="col-xl-12">
-                  <div class="card widget-1">
-                    <div class="card-body">
-                      <div class="widget-content">
-                        <div class="widget-round primary">
-                          <div class="bg-round">
-                            <svg class="svg-fill">
-                              <use href="assets/svg/icon-sprite.svg#tag"> </use>
-                            </svg>
-                            <svg class="half-circle svg-fill">
-                              <use href="assets/svg/icon-sprite.svg#halfcircle"></use>
-                            </svg>
-                          </div>
-                        </div>
-                        <div>
-                          <h4>4,200</h4><span class="f-light">Sales</span>
-                        </div>
-                      </div>
-                      <div class="font-primary f-w-500"><i class="icon-arrow-up icon-rotate me-1"></i><span>+70%</span></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
           <div class="col-xxl-auto col-xl-3 col-sm-6 box-col-6">
             <div class="row">
               <div class="col-xl-12">
@@ -112,7 +122,7 @@
                       <div class="widget-round warning">
                         <div class="bg-round">
                           <svg class="svg-fill">
-                            <use href="assets/svg/icon-sprite.svg#return-box"> </use>
+                            <use href="assets/svg/icon-sprite.svg#customers"> </use>
                           </svg>
                           <svg class="half-circle svg-fill">
                             <use href="assets/svg/icon-sprite.svg#halfcircle"></use>
@@ -120,7 +130,7 @@
                         </div>
                       </div>
                       <div>
-                        <h4>7000</h4><span class="f-light">Sales return</span>
+                        <h4>7000</h4><span class="f-light">Spa</span>
                       </div>
                     </div>
                     <div class="font-warning f-w-500"><i class="icon-arrow-down icon-rotate me-1"></i><span>-20%</span></div>
@@ -133,7 +143,7 @@
                         <div class="widget-round success">
                           <div class="bg-round">
                             <svg class="svg-fill">
-                              <use href="assets/svg/icon-sprite.svg#rate"> </use>
+                              <use href="assets/svg/icon-sprite.svg#24-hour"> </use>
                             </svg>
                             <svg class="half-circle svg-fill">
                               <use href="assets/svg/icon-sprite.svg#halfcircle"></use>
@@ -141,7 +151,7 @@
                           </div>
                         </div>
                         <div>
-                          <h4>5700</h4><span class="f-light">Purchase rate</span>
+                          <h4>5700</h4><span class="f-light">Restaurent</span>
                         </div>
                       </div>
                       <div class="font-success f-w-500"><i class="icon-arrow-up icon-rotate me-1"></i><span>+70%</span></div>
@@ -157,7 +167,7 @@
                 <div class="card widget-1 widget-with-chart">
                   <div class="card-body">
                     <div>
-                      <h4 class="mb-1">1,80k</h4><span class="f-light">Orders</span>
+                      <h4 class="mb-1">1,80k</h4><span class="f-light">Events</span>
                     </div>
                     <div class="order-chart">
                       <div id="orderchart"></div>
@@ -169,7 +179,7 @@
                 <div class="card widget-1 widget-with-chart">
                   <div class="card-body">
                     <div>
-                      <h4 class="mb-1">6,90k</h4><span class="f-light">Profit</span>
+                      <h4 class="mb-1">6,90k</h4><span class="f-light">Timezone</span>
                     </div>
                     <div class="profit-chart">
                       <div id="profitchart"></div>
@@ -468,68 +478,14 @@
                   </div>
                 </div>
               </div>
-              <div class="col-xl-12">
-                <div class="card growth-wrap">
-                  <div class="card-header card-no-border">
-                    <div class="header-top">
-                      <h5>Followers Growth</h5>
-                      <div class="dropdown icon-dropdown">
-                        <button class="btn dropdown-toggle" id="growthdropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="icon-more-alt"></i></button>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="growthdropdown"><a class="dropdown-item" href="#">Weekly</a><a class="dropdown-item" href="#">Monthly</a><a class="dropdown-item" href="#">Yearly</a></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card-body pt-0">
-                    <div class="growth-wrapper">
-                      <div id="growthchart"></div>
-                    </div>
+
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="col-xxl-5 col-lg-8 col-md-11 box-col-8 col-ed-6">
-            <div class="card papernote-wrap">
-              <div class="card-header card-no-border">
-                <div class="header-top">
-                  <h5>PaperNote</h5><a class="f-light d-flex align-items-center" href="#">View project <i class="f-w-700 icon-arrow-top-right"></i></a>
-                </div>
-              </div>
-              <div class="card-body pt-0"> <img class="banner-img img-fluid" src="assets/images/dashboard/papernote.jpg" alt="multicolor background">
-                <div class="note-content mt-sm-4 mt-2">
-                  <p>Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.</p>
-                  <div class="note-labels">
-                    <ul>
-                      <li> <span class="badge badge-light-primary">SAAS</span></li>
-                      <li> <span class="badge badge-light-success">E-Commerce</span></li>
-                      <li> <span class="badge badge-light-warning">Crypto</span></li>
-                      <li> <span class="badge badge-light-info">Project</span></li>
-                      <li> <span class="badge badge-light-secondary">NFT</span></li>
-                      <li> <span class="badge badge-light-light">+9</span></li>
-                    </ul>
-                    <div class="last-label"> <span class="badge badge-light-success">Inprogress</span></div>
-                  </div>
-                  <div class="mt-sm-4 mt-2 user-details">
-                    <div class="customers">
-                      <ul>
-                        <li class="d-inline-block"><img class="img-40 rounded-circle" src="assets/images/dashboard/user/1.jpg" alt="user"></li>
-                        <li class="d-inline-block"><img class="img-40 rounded-circle" src="assets/images/dashboard/user/6.jpg" alt="user"></li>
-                        <li class="d-inline-block"><img class="img-40 rounded-circle" src="assets/images/dashboard/user/7.jpg" alt="user"></li>
-                        <li class="d-inline-block"><img class="img-40 rounded-circle" src="assets/images/dashboard/user/3.jpg" alt="user"></li>
-                        <li class="d-inline-block"><img class="img-40 rounded-circle" src="assets/images/dashboard/user/8.jpg" alt="user"></li>
-                        <li class="d-inline-block">
-                          <div class="light-card"><span class="f-w-500">+5</span></div>
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="d-flex align-items-center">
-                      <h5 class="mb-0 font-primary f-18 me-1">$239,098</h5><span class="f-light f-w-500">(Budget)</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+
         </div>
       </div>
       <!-- Container-fluid Ends-->
