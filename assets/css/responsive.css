@@ -3724,6 +3724,7 @@ div.dataTables_wrapper table.dataTable td {
     display: none;
   }
 }
+
 @media (width: 768px) and (height: 1024px) {
   .page-wrapper.compact-wrapper .page-body-wrapper div.sidebar-wrapper .sidebar-main .sidebar-links {
     height: calc(100vh - 210px);

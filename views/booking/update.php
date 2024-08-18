@@ -2,27 +2,26 @@
 include( 'partial/header.php' ); ?>
 
 <link rel="stylesheet" type="text/css" href="assets/css/vendors/daterange-picker.css">
-  <link rel="stylesheet" type="text/css" href="assets/css/vendors/sweetalert2.css">
+<link rel="stylesheet" type="text/css" href="assets/css/vendors/sweetalert2.css">
 
 <?php
 include( 'partial/loader.php' ); ?>
 
 <div class="page-wrapper compact-wrapper" id="pageWrapper">
     <!-- Page Header Start-->
-	<?php
-	include( 'partial/topbar.php' ); ?>
+    <?php
+    include( 'partial/topbar.php' ); ?>
     <!-- Page Header Ends -->
 
     <!-- Page Body Start-->
     <div class="page-body-wrapper">
         <!-- Page Sidebar Start-->
-		<?php
-		include( 'partial/sidebar.php' ); ?>
+        <?php
+        include( 'partial/sidebar.php' ); ?>
         <!-- Page Sidebar Ends-->
-
         <div class="page-body">
-			<?php
-			include( 'partial/breadcrumb.php' ); ?>
+            <?php
+            include( 'partial/breadcrumb.php' ); ?>
             <!-- Container-fluid starts-->
             <div class="container-fluid">
                 <div class="row">
@@ -95,7 +94,7 @@ include( 'partial/loader.php' ); ?>
                                                         <input class="form-control" type="number" name="guest_age[]"
                                                                required>
                                                     </div>
-<!--                                                    // show remove button in right side with small-->
+                                                    <!--                                                    // show remove button in right side with small-->
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <div class="text-start mt-2 ">
@@ -130,12 +129,11 @@ include( 'partial/loader.php' ); ?>
             </div>
             <!-- Container-fluid Ends-->
         </div>
-
-		<?php
-		include( 'partial/footer.php' ); ?>
+        <?php
+        include( 'partial/footer.php' ); ?>
     </div>
 </div>
-
++
 <?php
 include( 'partial/scripts.php' ); ?>
 <script src="assets/js/tooltip-init.js"></script>
@@ -226,50 +224,50 @@ include( 'partial/footer-end.php' ); ?>
     });
 
     $(document).ready(function() {
-    $('#calculateCost').click(function(event) {
-        event.preventDefault();
+        $('#calculateCost').click(function(event) {
+            event.preventDefault();
 
-        calculateNights();
-        // Gather form data
-        let formData = $('#bookingForm').serialize();
+            calculateNights();
+            // Gather form data
+            let formData = $('#bookingForm').serialize();
 
-        // Send a POST request to the endpoint
-        $.ajax({
-            url: 'booking-calculate-cost-estimate-and-allocation',
-            type: 'POST',
-            data: formData,
-            dataType: 'json',
-            success: function(data) {
-                // Populate form fields with returned data
-                $('#totalCost').val(data.cost);
-                $('#singleRooms').val(data.rooms.SINGLE_ROOM);
-                $('#doubleRooms').val(data.rooms.DOUBLE_ROOM);
-                $('#tripleRooms').val(data.rooms.TRIPLE_ROOM);
-                $('#extraBeds').val(data.rooms.EXTRA_BED);
+            // Send a POST request to the endpoint
+            $.ajax({
+                url: 'booking-calculate-cost-estimate-and-allocation',
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                success: function(data) {
+                    // Populate form fields with returned data
+                    $('#totalCost').val(data.cost);
+                    $('#singleRooms').val(data.rooms.SINGLE_ROOM);
+                    $('#doubleRooms').val(data.rooms.DOUBLE_ROOM);
+                    $('#tripleRooms').val(data.rooms.TRIPLE_ROOM);
+                    $('#extraBeds').val(data.rooms.EXTRA_BED);
 
-                if (!data.cost) {
-                    // Display a sweet alert with an error message
+                    if (!data.cost) {
+                        // Display a sweet alert with an error message
+                        swal({
+                            title: 'Cost Calculation',
+                            text: 'Please select a valid date range.',
+                            icon: 'error'
+                        });
+                        return;
+                    }
+
+                    // Display a sweet alert with the returned data
                     swal({
                         title: 'Cost Calculation',
-                        text: 'Please select a valid date range.',
-                        icon: 'error'
+                        text: `Total Cost: ${data.cost}\nSingle Rooms: ${data.rooms.SINGLE_ROOM}\nDouble Rooms: ${data.rooms.DOUBLE_ROOM}\nTriple Rooms: ${data.rooms.TRIPLE_ROOM}\nExtra Beds: ${data.rooms.EXTRA_BED}`,
+                        icon: 'info'
                     });
-                    return;
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('Error:', textStatus, errorThrown);
                 }
-
-                // Display a sweet alert with the returned data
-                swal({
-                    title: 'Cost Calculation',
-                    text: `Total Cost: ${data.cost}\nSingle Rooms: ${data.rooms.SINGLE_ROOM}\nDouble Rooms: ${data.rooms.DOUBLE_ROOM}\nTriple Rooms: ${data.rooms.TRIPLE_ROOM}\nExtra Beds: ${data.rooms.EXTRA_BED}`,
-                    icon: 'info'
-                });
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error('Error:', textStatus, errorThrown);
-            }
+            });
         });
-    });
 
-    // check iff
-});
+        // check iff
+    });
 </script>

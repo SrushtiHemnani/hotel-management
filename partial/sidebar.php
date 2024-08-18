@@ -40,8 +40,8 @@
                         </a>
                         <ul class="sidebar-submenu">
                             <li><a href="booking-create">New Booking</a></li>
-                            <li><a href="booking2">View Booking2</a></li>
-                            <li><a href="booking">View Bookings</a></li>
+                            <li><a href="booking2">View Booking</a></li>
+                            <li><a href="booking">View Booking 2</a></li>
                         </ul>
                     </li>
                     <li class="sidebar-list">

@@ -63,6 +63,15 @@ Capsule::schema()->create('bookings', function (Blueprint $table) {
 	$table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
 });
 
+Capsule::schema()->create('booking_guest', function (Blueprint $table) {
+    $table->increments('id');
+    $table->unsignedInteger('booking_id');
+    $table->unsignedInteger('guest_id');
+    $table->timestamps();
+
+    $table->foreign('booking_id')->references('id')->on('bookings')->onDelete('cascade');
+    $table->foreign('guest_id')->references('id')->on('guests')->onDelete('cascade');
+});
 
 //
 //INSERT INTO rooms (room_type, room_price, capacity, is_extra)
