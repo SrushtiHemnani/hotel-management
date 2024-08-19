@@ -4,6 +4,9 @@ namespace App\models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @method static updateOrCreate( array $array, array $customerData )
+ */
 class Customer extends Model
 {
 	protected $table = 'customers';

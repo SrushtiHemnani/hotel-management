@@ -19,7 +19,9 @@ return [
 	'booking' => [ BookingController::class, 'index' ],
     'booking2' => [ BookingController::class, 'index_old' ],
 	'booking-create' => [ BookingController::class, 'create' ],
-	
+	'booking-edit/:id' => [ BookingController::class, 'edit' ],
+	'booking-update/:id' => [ BookingController::class, 'update' ],
+	'booking-delete/:id' => [ BookingController::class, 'delete' ],
 	'booking-calculate-cost-estimate-and-allocation' => [ BookingController::class, 'calculateCostEstimateAndAllocation' ],
 	'get-booking' => [ BookingController::class, 'getBooking' ],
 	

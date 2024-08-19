@@ -2,7 +2,6 @@
 
 require __DIR__ . '/../../bootstrap/bootstrap.php';
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Database\Schema\Blueprint;
 
@@ -23,8 +22,6 @@ Capsule::schema()->create('rooms', function (Blueprint $table) {
 	$table->boolean('is_extra')->default(0);
 	$table->timestamps();
 });
-
-
 
 
 Capsule::schema()->create('customers', function (Blueprint $table) {
@@ -57,20 +54,22 @@ Capsule::schema()->create('bookings', function (Blueprint $table) {
 	$table->string('check_in');
 	$table->string('check_out');
 	$table->string('total_price');
+	$table->unsignedInteger('parent_id')->nullable();
 	$table->timestamps();
 	
 	$table->foreign('room_id')->references('id')->on('rooms')->onDelete('cascade');
 	$table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+	$table->foreign('parent_id')->references('id')->on('bookings')->onDelete('cascade');
 });
 
 Capsule::schema()->create('booking_guest', function (Blueprint $table) {
-    $table->increments('id');
-    $table->unsignedInteger('booking_id');
-    $table->unsignedInteger('guest_id');
-    $table->timestamps();
-
-    $table->foreign('booking_id')->references('id')->on('bookings')->onDelete('cascade');
-    $table->foreign('guest_id')->references('id')->on('guests')->onDelete('cascade');
+	$table->increments('id');
+	$table->unsignedInteger('booking_id');
+	$table->unsignedInteger('guest_id');
+	$table->timestamps();
+	
+	$table->foreign('booking_id')->references('id')->on('bookings')->onDelete('cascade');
+	$table->foreign('guest_id')->references('id')->on('guests')->onDelete('cascade');
 });
 
 //

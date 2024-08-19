@@ -15,7 +15,7 @@ $capsule->addConnection([
     'driver'    => 'mysql',
     'host'      => 'localhost',
     'database'  => 'hotel_db',
-    'username'  => 'root',
+    'username'  => 'bug',
     'password'  => '',
     'charset'   => 'utf8',
     'collation' => 'utf8_unicode_ci',
