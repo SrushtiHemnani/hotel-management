@@ -34,7 +34,7 @@ class BookingController extends BaseController
 		
 		
 		$bookings = Booking::with([ 'customer', 'associatedBookings', 'room', 'guests', 'associatedBookings.guests', 'associatedBookings.room' ])
-		                   ->whereNull('parent_id')->groupBy([ 'customer_id' , 'check_in' , 'check_out' ])
+		                   ->whereNull('parent_id')->groupBy([ 'customer_id', 'check_in', 'check_out' ])
 		                   ->get();
 		
 		$this->view('booking/index', [ "bookings" => $bookings ]);
@@ -65,153 +65,197 @@ class BookingController extends BaseController
 		$this->view('booking/edit', [ "booking" => $booking ]);
 	}
 	
-public function update($id)
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $booking = Booking::with([
-                'customer',
-                'associatedBookings',
-                'room',
-                'guests',
-                'associatedBookings.guests',
-                'associatedBookings.room'
-            ])->whereNull('parent_id')
-              ->where('id', $id)
-              ->firstOrFail();
-
-            [ $check_in_date, $check_out_date, $nights ] = $this->handleDates($_POST['daterange']);
-            $guestData = $this->mapGuestNameAndAge($_POST);
-            $bookingService = new BookingService();
-            $result = $bookingService->calculateRooms($guestData);
+	public function update($id)
+	{
+		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+			[ $check_in_date, $check_out_date, $nights ] = $this->handleDates($_POST['daterange']);
+			$guestData = $this->mapGuestNameAndAge($_POST);
+			$bookingService = new BookingService();
+			$result = $bookingService->calculateRooms($guestData);
+			
+			// Update or create customer
+			$customerData = $this->getCustomerData($_POST);
+			$customer = $this->createOrUpdateCustomer($customerData);
+			
+			// Find the booking to update
+			$booking = Booking::with([ 'room', 'guests' ])
+			                  ->where('id', $id)
+			                  ->firstOrFail();
+			
+			// Update booking details
+			$roomAllocations = $result['ROOM_ALLOCATION'];
+			$parentBookingData = $this->findCustomer($roomAllocations, $customerData['name'], $customerData['age']);
 			
 			
-            // Update the customer details
-            $customerData = $this->getCustomerData($_POST);
-            $customer = $this->createOrUpdateCustomer($customerData);
-
-            // Update the parent booking details
-            $parentBookingData = $this->findCustomer($result['ROOM_ALLOCATION'], $customerData['name'], $customerData['age']);
-            $this->updateBooking($parentBookingData, $customer, $check_in_date, $check_out_date, $nights, $bookingService, $booking);
-
-            // Update guests for the parent booking
-            $this->updateGuests($parentBookingData, $customer, $booking);
-
-            // Update room allocations and handle extra beds
-            $this->updateRoomAllocations(
-                $result['ROOM_ALLOCATION'],
-                $customer,
-                $check_in_date,
-                $check_out_date,
-                $nights,
-                $bookingService,
-                $booking->id // Pass parent booking ID here
-            );
-
-            header('Location: /booking');
-        }
-        $this->view('booking/edit');
-    }
-
-    private function updateBooking($parentBooking, $customer, $check_in_date, $check_out_date, $nights, $bookingService, $booking)
-    {
-        $room = Room::where('room_type', $parentBooking['type'])->first();
-
-        $booking->update([
-            'room_id'     => $room->id,
-            'room_number' => $booking->room_number ?? $this->generateRoomNumber(),
-            'room_type'   => $room->room_type,
-            'room_price'  => $room->room_price,
-            'customer_id' => $customer->id,
-            'check_in'    => $check_in_date,
-            'check_out'   => $check_out_date,
-            'total_price' => $bookingService->calculateCost($nights),
-        ]);
-    }
-
-    private function updateGuests($parentBooking, $customer, $booking)
-    {
-        // Delete existing guests and booking guests
-        BookingGuest::where('booking_id', $booking->id)->delete();
-        $booking->guests()->delete();
-
-        // Create new guests and booking guests
-        $this->createGuests($parentBooking, $customer, $booking);
-    }
-
-    private function updateRoomAllocations($roomAllocations, $customer, $check_in_date, $check_out_date, $nights, $bookingService, $parentId = null)
-    {
-        if (isset($roomAllocations)) {
-            // Delete existing associated bookings and guests
-            Booking::where('parent_id', $parentId)->delete();
-
-            foreach ($roomAllocations as $roomAllocation) {
-                $room = Room::where('room_type', $roomAllocation['type'])->first();
-                $booking = Booking::create([
-                    'room_id'     => $room->id,
-                    'room_number' => $this->generateRoomNumber(),
-                    'room_type'   => $room->room_type,
-                    'room_price'  => $room->room_price,
-                    'customer_id' => $customer->id,
-                    'check_in'    => $check_in_date,
-                    'check_out'   => $check_out_date,
-                    'total_price' => $bookingService->calculateCost($nights),
-                    'parent_id'   => $parentId,
-                ]);
-
-                foreach ($roomAllocation['guests'] as $guest) {
-                    $guest = Guest::create([
-                        'name'        => $guest['name'],
-                        'age'         => $guest['age'],
-                        'customer_id' => $customer->id,
-                    ]);
-                    BookingGuest::create([
-                        'booking_id' => $booking->id,
-                        'guest_id'   => $guest->id,
-                    ]);
-                }
-
-                // Handle extra beds
-                if (isset($roomAllocation['extra'])) {
-                    $this->updateExtraBed($roomAllocation['extra'], $booking, $customer, $check_in_date, $check_out_date, $nights, $bookingService);
-                }
-            }
-        }
-    }
-
-    private function updateExtraBed($extraBedGuest, $parentBooking, $customer, $check_in_date, $check_out_date, $nights, $bookingService)
-    {
-        $extraBed = Room::where('room_type', "EXTRA_BED")->first();
-
-        // Delete existing extra bed booking if it exists
-        Booking::where('parent_id', $parentBooking->id)
-               ->where('room_type', "EXTRA_BED")
-               ->delete();
-
-        // Create new extra bed booking
-        $extraBedBooking = Booking::create([
-            'room_id'     => $extraBed->id,
-            'room_number' => $parentBooking->room_number,
-            'room_type'   => $extraBed->room_type,
-            'room_price'  => $extraBed->room_price,
-            'customer_id' => $customer->id,
-            'check_in'    => $check_in_date,
-            'check_out'   => $check_out_date,
-            'total_price' => $bookingService->calculateCost($nights),
-            'parent_id'   => $parentBooking->id,
-        ]);
-
-        // Create guest for the extra bed booking
-        $extra = Guest::create([
-            'name'        => $extraBedGuest['name'],
-            'age'         => $extraBedGuest['age'],
-            'customer_id' => $customer->id,
-        ]);
-        BookingGuest::create([
-            'booking_id' => $extraBedBooking->id,
-            'guest_id'   => $extra->id,
-        ]);
-    }
-
+			$this->updateBooking(
+				$booking,
+				$parentBookingData,
+				$customer,
+				$check_in_date,
+				$check_out_date,
+				$nights,
+				$bookingService
+			);
+			
+			// Update or create guests for the booking
+			$this->updateGuests($parentBookingData, $customer, $booking);
+			
+			
+			// Update room allocations for the booking
+			$this->updateRoomAllocations(
+				$roomAllocations,
+				$customer,
+				$check_in_date,
+				$check_out_date,
+				$nights,
+				$bookingService,
+				$booking->id
+			);
+			// Update extra bed booking if needed
+			$this->updateExtraBedBooking(
+				$parentBookingData,
+				$customer,
+				$booking,
+				$check_in_date,
+				$check_out_date,
+				$nights,
+				$bookingService
+			);
+			
+			
+			header('Location: /booking');
+		} else {
+			// Display the form for editing if GET request
+			$booking = Booking::with([ 'customer', 'associatedBookings', 'room', 'guests', 'associatedBookings.guests', 'associatedBookings.room' ])
+			                  ->where('id', $id)
+			                  ->firstOrFail();
+			
+			$this->view('booking/edit', [ "booking" => $booking ]);
+		}
+	}
+	
+	private function updateBooking($booking, $parentBookingData, $customer, $check_in_date, $check_out_date, $nights, $bookingService)
+	{
+		$room = Room::where('room_type', $parentBookingData['type'])->first();
+		
+		$booking->update([
+			                 'room_id'     => $room->id,
+			                 'room_number' => $booking->room_number ?? $this->generateRoomNumber(),
+			                 'room_type'   => $room->room_type,
+			                 'room_price'  => $room->room_price,
+			                 'customer_id' => $customer->id,
+			                 'check_in'    => $check_in_date,
+			                 'check_out'   => $check_out_date,
+			                 'total_price' => $bookingService->calculateCost($nights),
+		                 ]);
+	}
+	
+	private function updateGuests($parentBookingData, $customer, $booking)
+	{
+		// Remove existing guests
+		BookingGuest::where('booking_id', $booking->id)->delete();
+		// Add or update guests
+		foreach ($parentBookingData['guests'] as $guest) {
+			if ($guest['name'] === $customer->name && $guest['age'] === $customer->age) {
+				continue;
+			}
+			$guestModel = Guest::updateOrCreate(
+				[ 'name' => $guest['name'], 'age' => $guest['age'], 'customer_id' => $customer->id ],
+				[ 'name' => $guest['name'], 'age' => $guest['age'] ]
+			);
+			BookingGuest::updateOrCreate(
+				[ 'booking_id' => $booking->id, 'guest_id' => $guestModel->id ],
+				[ 'booking_id' => $booking->id, 'guest_id' => $guestModel->id ]
+			);
+		}
+	}
+	
+	private function updateExtraBedBooking($parentBookingData, $customer, $booking, $check_in_date, $check_out_date, $nights, $bookingService)
+	{
+		// Remove existing extra bed booking if it exists
+		Booking::where('parent_id', $booking->id)->where('room_type', 'EXTRA_BED')->delete();
+		
+		if (isset($parentBookingData['extra'])) {
+			
+			// Ensure the room type for the extra bed exists
+			$extraBed = Room::where('room_type', "EXTRA_BED")->first();
+			
+			if (!$extraBed) {
+				// Log or handle the case where the extra bed room type is not found
+				error_log('Extra bed room type not found');
+				return;
+			}
+			
+			// Create new booking for the extra bed
+			$extraBedBooking = Booking::create([
+				                                   'room_id'     => $extraBed->id,
+				                                   'room_number' => $this->generateRoomNumber(), // Ensure this generates a unique room number
+				                                   'room_type'   => $extraBed->room_type,
+				                                   'room_price'  => $extraBed->room_price,
+				                                   'customer_id' => $customer->id,
+				                                   'check_in'    => $check_in_date,
+				                                   'check_out'   => $check_out_date,
+				                                   'total_price' => $bookingService->calculateCost($nights),
+				                                   'parent_id'   => $booking->id,
+			                                   ]);
+			
+			// Add or update guest for the extra bed
+			$extra = Guest::updateOrCreate(
+				[ 'name' => $parentBookingData['extra']['name'], 'age' => $parentBookingData['extra']['age'], 'customer_id' => $customer->id ],
+				[ 'name' => $parentBookingData['extra']['name'], 'age' => $parentBookingData['extra']['age'] ]
+			);
+			
+			BookingGuest::updateOrCreate(
+				[ 'booking_id' => $extraBedBooking->id, 'guest_id' => $extra->id ],
+				[ 'booking_id' => $extraBedBooking->id, 'guest_id' => $extra->id ]
+			);
+		}
+	}
+	
+	private function updateRoomAllocations($roomAllocations, $customer, $check_in_date, $check_out_date, $nights, $bookingService, $parentId = null)
+	{
+		if (!isset($roomAllocations)) {
+			return;
+		}
+		// Remove existing room allocations for the booking
+		 Booking::where('parent_id', $parentId)->delete();
+		
+		foreach ($roomAllocations as $roomAllocation) {
+			$room = Room::where('room_type', $roomAllocation['type'])->first();
+			$booking = Booking::updateOrCreate(
+				[ 'room_id' => $room->id, 'room_number' => $this->generateRoomNumber(), 'room_type' => $room->room_type, 'customer_id' => $customer->id, 'check_in' => $check_in_date, 'check_out' => $check_out_date, 'parent_id' => $parentId ],
+				[ 'room_price' => $room->room_price, 'total_price' => $bookingService->calculateCost($nights) ]
+			);
+			
+			foreach ($roomAllocation['guests'] as $guest) {
+				$guestModel = Guest::updateOrCreate(
+					[ 'name' => $guest['name'], 'age' => $guest['age'], 'customer_id' => $customer->id ],
+					[ 'name' => $guest['name'], 'age' => $guest['age'] ]
+				);
+				BookingGuest::updateOrCreate(
+					[ 'booking_id' => $booking->id, 'guest_id' => $guestModel->id ],
+					[ 'booking_id' => $booking->id, 'guest_id' => $guestModel->id ]
+				);
+			}
+			
+			if (isset($roomAllocation['extra'])) {
+				$extraBed = Room::where('room_type', "EXTRA_BED")->first();
+				$extraBedBooking = Booking::updateOrCreate(
+					[ 'room_id' => $extraBed->id, 'room_number' => $booking->room_number, 'room_type' => $extraBed->room_type, 'customer_id' => $customer->id, 'check_in' => $check_in_date, 'check_out' => $check_out_date, 'parent_id' => $booking->id ],
+					[ 'room_price' => $extraBed->room_price, 'total_price' => $bookingService->calculateCost($nights) ]
+				);
+				$extra = Guest::updateOrCreate(
+					[ 'name' => $roomAllocation['extra']['name'], 'age' => $roomAllocation['extra']['age'], 'customer_id' => $customer->id ],
+					[ 'name' => $roomAllocation['extra']['name'], 'age' => $roomAllocation['extra']['age'] ]
+				);
+				BookingGuest::updateOrCreate(
+					[ 'booking_id' => $extraBedBooking->id, 'guest_id' => $extra->id ],
+					[ 'booking_id' => $extraBedBooking->id, 'guest_id' => $extra->id ]
+				);
+			}
+		}
+	}
+	
 	
 	/**
 	 * @return void
