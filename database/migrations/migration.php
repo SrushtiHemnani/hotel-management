@@ -13,15 +13,25 @@ Capsule::schema()->create('users', function (Blueprint $table) {
 	$table->timestamps();
 });
 
+// File: database/migrations/migration.php
+
 Capsule::schema()->create('rooms', function (Blueprint $table) {
-	$table->increments('id')->primary();
-	$table->string('room_type');
-	$table->string('room_price');
-	$table->integer('capacity');
-	$table->integer('room_count')->default(10);
-	$table->boolean('is_extra')->default(0);
-	$table->timestamps();
+    $table->increments('id')->primary();
+    $table->string('room_type');
+    $table->string('room_price');
+    $table->integer('capacity');
+    $table->integer('room_count')->default(10);
+    $table->boolean('is_extra')->default(0);
+    $table->timestamps();
 });
+
+// Insert default room types if they do not exist
+Capsule::table('rooms')->insertOrIgnore([
+    ['room_type' => 'SINGLE_ROOM', 'room_price' => 1500, 'capacity' => 1, 'is_extra' => 0],
+    ['room_type' => 'DOUBLE_ROOM', 'room_price' => 2000, 'capacity' => 2, 'is_extra' => 0],
+    ['room_type' => 'TRIPLE_ROOM', 'room_price' => 2750, 'capacity' => 3, 'is_extra' => 0],
+    ['room_type' => 'EXTRA_BED', 'room_price' => 500, 'capacity' => 1, 'is_extra' => 1],
+]);
 
 
 Capsule::schema()->create('customers', function (Blueprint $table) {

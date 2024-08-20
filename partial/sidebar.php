@@ -40,8 +40,7 @@
                         </a>
                         <ul class="sidebar-submenu">
                             <li><a href="booking-create">New Booking</a></li>
-                            <li><a href="booking2">View Booking</a></li>
-                            <li><a href="booking">View Booking 2</a></li>
+                            <li><a href="booking">View Booking</a></li>
                         </ul>
                     </li>
                     <li class="sidebar-list">
@@ -52,23 +51,11 @@
                             <span class="lan7">Rooms</span>
                         </a>
                         <ul class="sidebar-submenu">
-                            <li><a href="rooms">Rooms</a></li>
-                            <li><a href="room-create">Add New</a></li>
+                            <li><a href="room-create">New Room</a></li>
+                            <li><a href="rooms">View Rooms</a></li>
                         </ul>
                     </li>
-                    <li class="sidebar-list">
-                        <a class="sidebar-link sidebar-title" href="#">
-                            <svg class="stroke-icon">
-                                <use href="<?=BASE_PATH?>assets/svg/icon-sprite.svg#stroke-customers"></use>
-                            </svg>
-                            <span class="lan8">Customers</span>
-                            <ul class="sidebar-submenu">
 
-                                <li><a href="customers">List Customer</a></li>
-                                <li><a href="customer-create">Add New</a></li>
-                            </ul>
-                        </a>
-                    </li>
                     <li class="sidebar-list">
                         <a class="sidebar-link sidebar-title" href="staff.php">
                             <svg class="stroke-icon">

@@ -1,4 +1,8 @@
 <?php
+//echo "<pre>";
+//print_r($bookings);
+//echo "</pre>";
+//die;
 include('partial/header.php'); ?>
 <style>
     .details-container {
@@ -120,7 +124,7 @@ include('partial/header.php'); ?>
                                         <?php foreach ($bookings as $data) { ?>
                                             <tr class="parent-row">
                                                 <td class="details-control"></td>
-                                                <td><?php echo htmlspecialchars($data['id']); ?></td>
+                                                <td><?php echo htmlspecialchars($data['booking_number']); ?></td>
                                                 <td><?php echo htmlspecialchars($data['room_number']); ?></td>
                                                 <td><?php echo htmlspecialchars($data['room_type']); ?></td>
                                                 <td><?php echo htmlspecialchars($data['total_price']); ?></td>
@@ -190,7 +194,7 @@ $(document).ready(function() {
         "data": <?php echo json_encode($bookings); ?>,
         "columns": [
             { "data": null, "defaultContent": "", "className": "details-control" },
-            { "data": "id" },
+            { "data": "booking_number" },
             { "data": "room_number" },
             { "data": "room_type" },
             { "data": "total_price" },
@@ -239,7 +243,7 @@ $(document).ready(function() {
                 '<table cellpadding="5" cellspacing="0" border="0" class="details-table" style="width:100%;">' +
                 '<thead>' +
                 '<tr>' +
-                '<th>Booking ID</th>' +
+                '<th>Booking Number</th>' +
                 '<th>Room Number</th>' +
                 '<th>Room Type</th>' +
                 '<th>Room Price</th>' +
@@ -251,13 +255,13 @@ $(document).ready(function() {
                 '</thead><tbody>';
 
             // Include the customer as a guest in the list
-            let allGuests = data.guests.map(guest => `${guest.name} (${guest.age})`);
+            let allGuests = data.guests.map(guest => `${guest.name} `);
             if (data.customer) {
-                allGuests.unshift(`${data.customer.name} (${data.customer.age})`);
+                allGuests.unshift(`${data.customer.name} `);
             }
 
             parentBookingHtml += '<tr>' +
-                `<td>${data.id}</td>` +
+                `<td>${data.booking_number}</td>` +
                 `<td>${data.room_number}</td>` +
                 `<td>${data.room_type}</td>` +
                 `<td>${data.room_price}</td>` +
@@ -277,7 +281,7 @@ $(document).ready(function() {
                 '<table cellpadding="5" cellspacing="0" border="0" class="details-table" style="width:100%;">' +
                 '<thead>' +
                 '<tr>' +
-                '<th>Booking ID</th>' +
+                '<th>Booking Number</th>' +
                 '<th>Room Number</th>' +
                 '<th>Room Type</th>' +
                 '<th>Room Price</th>' +
@@ -292,12 +296,12 @@ $(document).ready(function() {
                 let guestsHtml = '';
                 if (booking.guests && Array.isArray(booking.guests)) {
                     guestsHtml = booking.guests.map(function (guest) {
-                        return `${guest.name} (${guest.age})`;
+                        return `${guest.name} `;
                     }).join('<br>');
                 }
 
                 associatedBookingsHtml += `<tr>` +
-                    `<td>${booking.id}</td>` +
+                    `<td>${booking.booking_number}</td>` +
                     `<td>${booking.room_number}</td>` +
                     `<td>${booking.room_type}</td>` +
                     `<td>${booking.room_price}</td>` +
