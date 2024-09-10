@@ -14,20 +14,21 @@ class BookingGuest extends Model
         'customer_id',
     ];
 
-    public function booking()
-    {
-        return $this->belongsTo(Booking::class);
-    }
 
-    public function guest()
-    {
-        return $this->belongsTo(Guest::class);
-    }
 
     public function customer()
     {
         return $this->belongsTo(Customer::class);
     }
 
+    public function bookingDetail()
+    {
+        return $this->belongsTo(BookingDetail::class);
+    }
+
+    public function guest()
+    {
+        return $this->belongsTo(Guest::class);
+    }
 
 }

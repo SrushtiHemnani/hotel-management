@@ -11,36 +11,38 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Booking extends Model
 {
-	protected $table   = 'bookings';
-	protected $guarded = [];
-	
-	 public function customer() {
+    protected $table = 'bookings';
+    protected $guarded = [];
+
+    public function customer()
+    {
         return $this->belongsTo(Customer::class);
     }
 
-    public function room() {
+    public function bookingDetail()
+    {
+        return $this->hasMany(BookingDetail::class);
+    }
+
+    public function room()
+    {
         return $this->belongsTo(Room::class);
     }
 
-    public function guests() {
+    public function guests()
+    {
         return $this->belongsToMany(Guest::class, 'booking_guest');
     }
 
-    public function parent() {
-        return $this->belongsTo(Booking::class, 'parent_id');
+
+    public function bookingGuest()
+    {
+        return $this->hasMany(BookingGuest::class);
     }
 
-    public function children() {
-        return $this->hasMany(Booking::class, 'parent_id');
-    }
-	public function associatedBookings()
+    public function bookingDetails()
     {
-        return $this->hasMany(Booking::class, 'parent_id');
+        return $this->hasMany(BookingDetail::class);
     }
-	
-	public function bookingGuest()
-{
-    return $this->hasMany(BookingGuest::class);
-}
-	
+
 }

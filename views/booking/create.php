@@ -1,28 +1,28 @@
 <?php
-include( 'partial/header.php' ); ?>
+include('partial/header.php'); ?>
 
 <link rel="stylesheet" type="text/css" href="assets/css/vendors/daterange-picker.css">
-  <link rel="stylesheet" type="text/css" href="assets/css/vendors/sweetalert2.css">
+<link rel="stylesheet" type="text/css" href="assets/css/vendors/sweetalert2.css">
 
 <?php
-include( 'partial/loader.php' ); ?>
+include('partial/loader.php'); ?>
 
 <div class="page-wrapper compact-wrapper" id="pageWrapper">
     <!-- Page Header Start-->
-	<?php
-	include( 'partial/topbar.php' ); ?>
+    <?php
+    include('partial/topbar.php'); ?>
     <!-- Page Header Ends -->
 
     <!-- Page Body Start-->
     <div class="page-body-wrapper">
         <!-- Page Sidebar Start-->
-		<?php
-		include( 'partial/sidebar.php' ); ?>
+        <?php
+        include('partial/sidebar.php'); ?>
         <!-- Page Sidebar Ends-->
 
         <div class="page-body">
-			<?php
-			include( 'partial/breadcrumb.php' ); ?>
+            <?php
+            include('partial/breadcrumb.php'); ?>
             <!-- Container-fluid starts-->
             <div class="container-fluid">
                 <div class="row">
@@ -36,43 +36,43 @@ include( 'partial/loader.php' ); ?>
                                     <div class="card-body">
                                         <form id="bookingForm" class="theme-form mega-form" method="post" action="booking-create">
                                             <h6>Personal Details</h6>
-                                            <div class="mb-3">
-                                                <label class="col-form-label">Full Name</label>
-                                                <input class="form-control" type="text" id="fullName" name="name"
-                                                       required>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="col-form-label">Full Name</label>
+                                                    <input class="form-control" type="text" id="fullName" name="name" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="col-form-label">Email</label>
+                                                    <input class="form-control" type="email" id="email" name="email" required>
+                                                </div>
                                             </div>
-
-                                            <div class="mb-3">
-                                                <label class="col-form-label">Email</label>
-                                                <input class="form-control" type="email" id="email" name="email"
-                                                       required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="col-form-label">Phone Number</label>
-                                                <input class="form-control" type="text" id="phoneNumber"
-                                                       name="phone">
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="col-form-label">Customer Age</label>
-                                                <input class="form-control" type="number" id="customerAge" name="age"
-                                                       required>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="col-form-label">Phone Number</label>
+                                                    <input class="form-control" type="text" id="phoneNumber" name="phone">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="col-form-label">Customer Age</label>
+                                                    <input class="form-control" type="number" id="customerAge" name="age" required>
+                                                </div>
                                             </div>
 
                                             <h6>Booking Details</h6>
-                                            <div class="mb-3">
-                                                <label class="col-form-label">Check-in and Check-out</label>
-                                                <input class="form-control" type="text" name="daterange"
-                                                       value="01/15/2017 - 02/15/2017">
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="col-form-label">Check-in and Check-out</label>
+                                                    <input class="form-control" type="text" name="daterange" value="01/15/2017 - 02/15/2017">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="col-form-label">Number of Nights</label>
+                                                    <input class="form-control" type="number" id="nights" name="nights" readonly>
+                                                </div>
                                             </div>
-                                            <div class="mb-3">
-                                                <label class="col-form-label">Number of Nights</label>
-                                                <input class="form-control" type="number" id="nights" name="nights"
-                                                       readonly>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="col-form-label">Total Cost</label>
-                                                <input class="form-control" type="text" id="totalCost" name="total_cost"
-                                                       readonly>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="col-form-label">Total Cost</label>
+                                                    <input class="form-control" type="text" id="totalCost" name="total_cost" readonly>
+                                                </div>
                                             </div>
 
                                             <input type="hidden" id="singleRooms" name="single_rooms">
@@ -84,39 +84,29 @@ include( 'partial/loader.php' ); ?>
                                             <div id="guests">
                                                 <div class="guest card mb-3 p-3">
                                                     <h4>Guest 1</h4>
-                                                    <div class="form-group">
-                                                        <label class="form-label">Guest Full Name</label>
-                                                        <input class="form-control" type="text"
-                                                               name="guest_name[]" required>
+                                                    <div class="row">
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label">Guest Full Name</label>
+                                                            <input class="form-control" type="text" name="guest_name[]" required>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label">Guest Age</label>
+                                                            <input class="form-control" type="number" name="guest_age[]" required>
+                                                        </div>
                                                     </div>
-
-                                                    <div class="form-group">
-                                                        <label class="form-label">Guest Age</label>
-                                                        <input class="form-control" type="number" name="guest_age[]"
-                                                               required>
-                                                    </div>
-<!--                                                    // show remove button in right side with small-->
                                                     <div class="row">
                                                         <div class="col-12">
-                                                            <div class="text-start mt-2 ">
-                                                                <button type="button" class="btn btn-danger btn-sm"
-                                                                        onclick="removeGuest(this)">Remove
-                                                                </button>
+                                                            <div class="text-start mt-2">
+                                                                <button type="button" class="btn btn-danger btn-sm" onclick="removeGuest(this)">Remove</button>
                                                             </div>
                                                         </div>
-
                                                     </div>
-
                                                 </div>
                                             </div>
-                                            <button type="button" class="btn btn-secondary mb-3" onclick="addGuest()">
-                                                Add Guest
-                                            </button>
+                                            <button type="button" class="btn btn-secondary mb-3" onclick="addGuest()">Add Guest</button>
 
                                             <div class="text-end">
-                                                <button type="button" class="btn btn-primary" id="calculateCost">
-                                                    Calculate Cost
-                                                </button>
+                                                <button type="button" class="btn btn-primary" id="calculateCost">Calculate Cost</button>
                                                 <button type="submit" class="btn btn-success">Submit</button>
                                                 <button type="button" class="btn btn-secondary">Cancel</button>
                                             </div>
@@ -131,16 +121,16 @@ include( 'partial/loader.php' ); ?>
             <!-- Container-fluid Ends-->
         </div>
 
-		<?php
-		include( 'partial/footer.php' ); ?>
+        <?php
+        include('partial/footer.php'); ?>
     </div>
 </div>
 
 <?php
-include( 'partial/scripts.php' ); ?>
+include('partial/scripts.php'); ?>
 <script src="assets/js/tooltip-init.js"></script>
 <?php
-include( 'partial/footer-end.php' ); ?>
+include('partial/footer-end.php'); ?>
 
 <script src="assets/js/datepicker/daterange-picker/moment.min.js"></script>
 <script src="assets/js/datepicker/daterange-picker/daterangepicker.js"></script>
@@ -154,33 +144,30 @@ include( 'partial/footer-end.php' ); ?>
         const guestDiv = document.createElement('div');
         guestDiv.classList.add('guest', 'card', 'mb-3', 'p-3');
         guestDiv.innerHTML = `
-            <h4>Guest ${ guestCounter }</h4>
-              <div class="form-group">
-                                                        <label class="form-label">Guest Full Name</label>
-                                                        <input class="form-control" type="text"
-                                                               name="guest_name[]" required>
-                                                    </div>
-
-            <div class="form-group">
-                <label class="form-label">Guest Age</label>
-                <input class="form-control" type="number" name="guest_age[]" required>
+            <h4>Guest ${guestCounter}</h4>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Guest Full Name</label>
+                    <input class="form-control" type="text" name="guest_name[]" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Guest Age</label>
+                    <input class="form-control" type="number" name="guest_age[]" required>
+                </div>
             </div>
-              <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="text-start mt-2" >
-                                                                <button type="button" class="btn btn-danger btn-sm "
-                                                                        onclick="removeGuest(this)">Remove
-                                                                </button>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="text-start mt-2">
+                        <button type="button" class="btn btn-danger btn-sm" onclick="removeGuest(this)">Remove</button>
+                    </div>
+                </div>
+            </div>
         `;
         document.getElementById('guests').appendChild(guestDiv);
     }
 
     function removeGuest(button) {
-        const guestDiv = button.parentElement;
+        const guestDiv = button.closest('.guest');
         guestDiv.remove();
     }
 
@@ -202,33 +189,9 @@ include( 'partial/footer-end.php' ); ?>
         } else {
             $("#nights").val(0); // Reset if dates are not fully selected
         }
-
     }
 
-    $(function () {
-        $('input[name="daterange"]').daterangepicker({
-            autoUpdateInput: false,
-            minDate: moment(), // Disallow past dates
-            startDate: moment(), // Default start date is today
-            endDate: moment(), // Default end date is today
-            locale: {
-                cancelLabel: 'Clear'
-            }
-        });
-        $('input[name="daterange"]').on('apply.daterangepicker', function (ev, picker) {
-            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
-            calculateNights(); // Automatically calculate nights when date range is selected
-        });
-
-        $('input[name="daterange"]').on('cancel.daterangepicker', function (ev, picker) {
-            $(this).val('');
-        });
-    });
-
-    $(document).ready(function() {
-    $('#calculateCost').click(function(event) {
-        event.preventDefault();
-
+    function calculateCost() {
         calculateNights();
         // Gather form data
         let formData = $('#bookingForm').serialize();
@@ -268,8 +231,47 @@ include( 'partial/footer-end.php' ); ?>
                 console.error('Error:', textStatus, errorThrown);
             }
         });
+    }
+
+    $(function () {
+        const today = moment().format('MM/DD/YYYY');
+        $('input[name="daterange"]').daterangepicker({
+            autoUpdateInput: false,
+            minDate: moment(), // Disallow past dates
+            startDate: today, // Default start date is today
+            endDate: today, // Default end date is today
+            locale: {
+                cancelLabel: 'Clear'
+            }
+        });
+        $('input[name="daterange"]').on('apply.daterangepicker', function (ev, picker) {
+            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+            calculateNights(); // Automatically calculate nights when date range is selected
+        });
+
+        $('input[name="daterange"]').on('cancel.daterangepicker', function (ev, picker) {
+            $(this).val('');
+        });
+
+        // Set the default value to today's date
+        $('input[name="daterange"]').val(today + ' - ' + today);
     });
 
-    // check iff
-});
+    $(document).ready(function() {
+        $('#calculateCost').click(function(event) {
+            event.preventDefault();
+            calculateCost();
+        });
+
+        $('#submit').click(function(event) {
+            if ($('#totalCost').val() === '') {
+                event.preventDefault();
+                swal({
+                    title: 'Submit Error',
+                    text: 'Please calculate the cost before submitting.',
+                    icon: 'error'
+                });
+            }
+        });
+    });
 </script>

@@ -14,7 +14,7 @@ define("BASE_PATH", "http://localhost:8000/");
 $capsule->addConnection([
     'driver'    => 'mysql',
     'host'      => 'localhost',
-    'database'  => 'hotel_db',
+    'database'  => 'hotel_db_1',
     'username'  => 'root',
     'password'  => '',
     'charset'   => 'utf8',
@@ -27,3 +27,9 @@ $capsule->setAsGlobal();
 
 // Boot Eloquent ORM
 $capsule->bootEloquent();
+
+// Log all queries
+$capsule::listen(function ($query) {
+    echo "1111111111111111111111";
+    file_put_contents('query.log', $query->sql . ' [' . implode(', ', $query->bindings) . ']' . PHP_EOL, FILE_APPEND);
+});
