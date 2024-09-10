@@ -32,21 +32,19 @@ include( 'partial/loader.php' ); ?>
                                 <h3 class="mb-3">Bookings</h3></div>
                             <div class="card-body">
                                 <div class="table-responsive">
-
-                                    <table id="bookingTable" class="display">
+                                    <table class="display" id="bookingTable">
                                         <thead>
                                         <tr>
                                             <th>Customer Name</th>
                                             <th>Total Price</th>
-                                            <th>Check-In</th>
-                                            <th>Check-Out</th>
-                                            <th>Rooms</th>
+                                            <th>Check-in</th>
+                                            <th>Check-out</th>
                                             <th>Guests</th>
-
+                                            <th>Rooms</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <!-- Data will be loaded here by DataTables -->
+                                        <!-- DataTables will populate this -->
                                         </tbody>
                                     </table>
 
